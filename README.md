@@ -12,13 +12,13 @@ $ ./add_cuda
 Max error: 0.000000
 ```
 
-However, getting a system to the point where you can run `nvcc` is quite complicated as can be gauged from the size of the [CUDA installation instructions for Linux](https://docs.nvidia.com/cuda/cuda-installation-guide-linux/).
+However, getting a system to the point where you can run `nvcc` is quite complicated (as can be gauged from the size of the [CUDA installation instructions for Linux](https://docs.nvidia.com/cuda/cuda-installation-guide-linux/)).
 
-The nature of CUDA means that a surprising number of elements come into play. The different generations of GPUs have characteristics, e.g. a [compute capability](https://developer.nvidia.com/cuda-gpus), that affects what driver can be installed and this in turn determines the compatible CUDA versions. Parsing the necessary information out of the [CUDA toolkit release notes](https://docs.nvidia.com/cuda/cuda-toolkit-release-notes/index.html) requires a degree in cryptology (it's easier to search SO for hopefully up-to-date compatibility matrices).
+The nature of CUDA means that a surprising number of elements come into play. The different generations of GPUs have characteristics, e.g. a [compute capability](https://developer.nvidia.com/cuda-gpus), that affects what driver can be installed and this in turn determines the compatible CUDA versions. Parsing the necessary information out of the [CUDA toolkit release notes](https://docs.nvidia.com/cuda/cuda-toolkit-release-notes/index.html) requires a degree in cryptology (it's easier to search SO for _hopefully_ up-to-date compatibility matrices).
 
 By default, Nvidia drivers will refuse to install on a system that does not have the necessary hardware but you can force installation. This is also true of other CUDA components - the complexity of all the interactions mean that Nvidia try to stop you installing things if the system does not match expectations.
 
-An easier approach is to use one of the Nvidia's [`nvidia/cuda`](https://hub.docker.com/r/nvidia/cuda) Docker images (look for the latest `devel` tag in the "Supported tags" section).
+An easier approach is to use one of the Nvidia's [`nvidia/cuda`](https://hub.docker.com/r/nvidia/cuda) Docker images (look for the latest `devel` tag in the "Supported tags" sections of the Docker Hub page).
 
 Docker compose solution
 -----------------------
@@ -32,7 +32,7 @@ $ docker-compose build
 
 This may take a long time as several of the necessary Docker layers are over 1GiB.
 
-Once built, you can compile the `add.cu` sample included here even if you're running on a machine that has no CPUs (the compilation time will several seconds even for this tiny sample):
+Once built, you can compile the `add.cu` sample, included here, even if you're running on a machine that has no GPUs (the compilation time will several seconds even for this tiny sample):
 
 ```
 $ docker-compose run interactive-cuda nvcc add.cu -o add_cuda
@@ -45,7 +45,7 @@ Dockerfile  add.cu  add_cuda*  docker-compose.yml
                     ^^^^^^^^^
 ```
 
-Through the magic of `docker-compose`, this runs `nvcc` within a container on our local `add.cu` file and produces an executable.
+Through the magic of `docker-compose`, this runs `nvcc` within a container on our local `add.cu` file.
 
 When you run the `nvcc` step, you'll see that the container outputs the warning:
 
@@ -70,7 +70,7 @@ It actually fails silently, you just see the normal `WARNING` message from the c
 
 To get things to work, you'd need to be running on a system with a GPU and make this GPU available to `dockerd` by setting up the [NVIDIA Container Toolkit](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/user-guide.html) - in particular you need to add the `nvidia-container-runtime` runtime.
 
-Then you could update the [`docker-compose.yml`](docker-compose.yml) file to reserve the necessary GPU capability as covered in the [Enabling GPU access with Compose page](https://docs.docker.com/compose/gpu-support/).
+Then you would need to update the [`docker-compose.yml`](docker-compose.yml) file to reserve the necessary GPU capability as covered in the [Enabling GPU access with Compose page](https://docs.docker.com/compose/gpu-support/).
 
 This step is simpler if you're doing everything with plain `docker` and within a container, then you just need to add `--gpus all` when running things (as shown in the next section).
 
