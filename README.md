@@ -105,3 +105,22 @@ If you were on an Intel machine with a GPU (and with Docker configured with the 
 $ docker run --gpus all --interactive --tty --platform linux/amd64 nvidia/cuda:12.1.0-devel-ubuntu22.04
              ^^^^^^^^^^
 ```
+
+CUDA assets
+-----------
+
+If you want to look at the various assets that make up a CUDA installation, you'll find them under the symbolic link `/usr/local/cuda` in the container:
+
+```
+$ docker run --interactive --tty --platform linux/amd64 nvidia/cuda:12.1.0-devel-ubuntu22.04
+root@4251c1754915:~# ls -F /usr/local/cuda/include/
+CL/         cuda_surface_types.h    cusparse.h                   nvJitLink.h
+Openacc/    cuda_texture_types.h    cusparse_v2.h                nvPTXCompiler.h
+Openmp/     cuda_vdpau_interop.h    device_atomic_functions.h    nvToolsExt.h
+...
+root@4251c1754915:~# ls -F /usr/local/cuda/bin
+__nvcc_device_query*  compute-sanitizer*  cu++filt*  cuda-gdbserver*  cuobjdump*  nvcc*         nvdisasm*  nvprof*   ptxas*
+bin2c*                crt/                cuda-gdb*  cudafe++*        fatbinary*  nvcc.profile  nvlink*    nvprune*
+```
+
+As you can see, there are CUDA specific versions of GDB and other tools, not just the compiler.
