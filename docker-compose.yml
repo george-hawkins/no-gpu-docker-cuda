@@ -1,0 +1,12 @@
+version: "3.7"
+
+services:
+  interactive-cuda:
+    user: ${UID?UID must be set}:${GID?GID must be set}
+    build:
+      context: .
+      args:
+        uid: $UID
+        workspace: /var/tmp/workspace
+    volumes:
+      - .:/var/tmp/workspace
