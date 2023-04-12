@@ -49,7 +49,7 @@ Dockerfile  add.cu  add_cuda*  docker-compose.yml
 
 Through the magic of `docker-compose`, this runs `nvcc` within a container on our local `add.cu` file.
 
-Note: `UID` and `GID` need to be made available so that `docker-compose.yml` can pick them up. `UID` already exists as a shell variable, so just needs to be exported, while `GID` needs a value and needs to be and exported.
+Note: `UID` and `GID` need to be made available so that `docker-compose.yml` can pick them up. `UID` already exists as a shell variable, so just needs to be exported, while `GID` needs a value and needs to be exported.
 
 When you run the `nvcc` step, you'll see that the container outputs the warning:
 
